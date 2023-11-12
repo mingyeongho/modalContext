@@ -1,40 +1,43 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Context api 사용해서 모달 구현
 
-## Getting Started
+### Goals
 
-First, run the development server:
+1. 외부 라이브러리를 사용하지 않는다.
+2. 모달은 다른 모달을 부를 수 있어야 한다. (모달 내에서 모달 오픈 가능)
+3. 사용하기 쉬워야 한다.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### 설명
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- '/components/Modal/index.tsx'
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+  - portal의 자식으로 모달을 띄우는 컴포넌트
+  - 외부 클릭 시 close 가능
+  - props로 모달의 key를 받음 (외부 클릭 시 닫힐 모달을 선택하기 위해)
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+- '/components/Modal/layout.tsx'
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+  - 흰 배경
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- '/context/ModalContext'
+  - Context와 Provider 선언
+  - Context
+    - 타입 정의
+  - Provider
+    - 사용할 modals변수와 onOpen, onClose 함수 선언
+    - 외부 스크롤 막기 (useEffect)
+    - ModalContext.Provider 사용
+- '/utils/modalStore.ts'
 
-## Learn More
+  - 모달들을 모아놓는 변수
+  - ⭐️ 이 곳에 모달의 key와 컴포넌트를 넣어놔야 'ModalKey' 값으로 사용할 수 있음. (ModalKey값은 오버레이 클릭 시 어떤 모달이 닫힐 것인지 또는 open 할 때 어떤 모달을 열 것인지 인텔리센스로 알려줌)
 
-To learn more about Next.js, take a look at the following resources:
+- '/hooks/useModal.ts'
+  - useContext를 사용해서 context를 가져옴
+  - context가 없다면 에러 노출
+  - 실제 모달에서 사용할 때 useModal을 사용하여 다른 모달을 열거나 닫을 수 있다. (예시는 '/pages/index.tsx' 또는 '/components/Modal/OneModal/OneModal.tsx' 참고)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 문제점
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- ModalContext에서 모달에 props를 전달해줄 때 Record<string, any> 타입으로 전달해주니 인텔리센스가 props에 뜨지않음.
+- ModalContext.tsx 65번째 줄에 각 컴포넌트에 필요한 props가 적용되지 않았다는 에러 발생
+- ⭐️ 어떻게 고쳐야 좋을지 의견 주시면 적극 반영하겠습니다.
