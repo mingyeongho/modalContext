@@ -83,4 +83,8 @@
 
 - ModalContext에서 모달에 props를 전달해줄 때 Record<string, any> 타입으로 전달해주니 인텔리센스가 props에 뜨지않음.
 - ModalContext.tsx 65번째 줄에 각 컴포넌트에 필요한 props가 적용되지 않았다는 에러 발생
-- ⭐️ 어떻게 고쳐야 좋을지 의견 주시면 적극 반영하겠습니다.
+
+=> 문제점들 해결했습니다!!
+
+- 모달 컨텍스트의 onOpen에 제네릭을 붙여서 onOpen을 사용할 때 `onOpen<Type>({name: '', props: {asdasd: asdasd}})` 이런식으로 사용하여 해결했습니다.
+- modals를 선언할 때 any 타입을 주는게 좀 걸리지만 원했던 기능은 "인텔리센스에 원하는 타입이 뜨면 좋겠다"라는 것이었어서 목적은 달성한거 같습니다.

@@ -7,4 +7,4 @@ export const modalStore = {
 };
 
 export type ModalKey = keyof typeof modalStore;
-export type ModalPropsType = Record<string, any>;
+export type ModalPropsType<T> = T | Record<string, any>;

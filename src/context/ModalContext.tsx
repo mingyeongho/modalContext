@@ -8,19 +8,19 @@ import {
   useState,
 } from "react";
 
-type ModalType = {
+type ModalType<T> = {
   name: ModalKey;
-  props: ModalPropsType;
+  props: ModalPropsType<T>;
 };
 
 export const ModalContext = createContext<null | {
-  modals: ModalType[];
-  onOpen: (modal: ModalType) => void;
+  modals: ModalType<any>[];
+  onOpen: <T>(modal: ModalType<T>) => void;
   onClose: (name: ModalKey) => void;
 }>(null);
 
 export const ModalProvider = ({ children }: PropsWithChildren<unknown>) => {
-  const [modals, setModals] = useState<ModalType[]>([]);
+  const [modals, setModals] = useState<ModalType<any>[]>([]);
 
   // 모달 열었을 때 외부 스크롤 막기
   useEffect(() => {
@@ -42,8 +42,8 @@ export const ModalProvider = ({ children }: PropsWithChildren<unknown>) => {
     };
   }, [modals.length]);
 
-  const onOpen = useCallback((modal: ModalType) => {
-    setModals((prev) => [...prev, modal]);
+  const onOpen = useCallback(<T,>({ name, props }: ModalType<T>) => {
+    setModals((prev) => [...prev, { name, props }]);
   }, []);
 
   const onClose = useCallback((name: ModalKey) => {

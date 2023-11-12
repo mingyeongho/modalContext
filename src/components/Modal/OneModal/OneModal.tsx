@@ -1,5 +1,6 @@
 import useModal from "@/hooks/useModal";
 import ModalLayout from "../layout";
+import { TwoModalProps } from "../TwoModal/TwoModal";
 
 export type OneModalProps = {
   label: string;
@@ -13,7 +14,10 @@ const OneModal = ({ label }: OneModalProps) => {
       {label}
       <button
         onClick={() =>
-          onOpen({ name: "twomodal", props: { label: "ㅠㅠ인텔리센스ㅠㅠ" } })
+          onOpen<TwoModalProps>({
+            name: "twomodal",
+            props: { label: "되냐..ㅁㄴㅇㅁㅇㅁㄴㅇㅁㄴㅇㅁㄴㅇ?" },
+          })
         }
       >
         모달 2 열기

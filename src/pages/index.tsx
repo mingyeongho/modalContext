@@ -1,3 +1,4 @@
+import { OneModalProps } from "@/components/Modal/OneModal/OneModal";
 import useModal from "@/hooks/useModal";
 
 export default function Home() {
@@ -6,9 +7,9 @@ export default function Home() {
     <main>
       <button
         onClick={() =>
-          onOpen({
+          onOpen<OneModalProps>({
             name: "onemodal",
-            props: { label: "인텔리센스가 안되네;;;;" },
+            props: { label: "된다!!!!!" },
           })
         }
       >
