@@ -36,8 +36,49 @@
   - context가 없다면 에러 노출
   - 실제 모달에서 사용할 때 useModal을 사용하여 다른 모달을 열거나 닫을 수 있다. (예시는 '/pages/index.tsx' 또는 '/components/Modal/OneModal/OneModal.tsx' 참고)
 
+### 사용방법
+
+1. '/components/Modal' 폴더에 사용할 모달을 만든다. (modalKey값은 고유해야함.)
+   - ```
+     <ModalLayout name="modalKey">
+         어쩌구 저쩌구
+       </ModalLayout>
+     ```
+2. '/utils/modalStore.ts'에 있는 modalStore에 modalKey: Component 방식으로 추가한다.
+
+   - ```
+       export const modalStore = {
+            onemodal: OneModal,
+            twomodal: TwoModal,
+       };
+     ```
+
+3. 해당 모달을 여는 곳에서 useModal을 사용하여 부른다. (onOpen({name: modalKey, props: Record<string, any>}))
+
+   - ```
+        const OneModal = ({ label }: OneModalProps) => {
+            const { onOpen } = useModal();
+
+            return (
+                <ModalLayout name="onemodal">
+                    {label}
+                    <button
+                        onClick={() =>
+                            onOpen({ name: "twomodal", props: { label: "ㅠㅠ인텔리센스ㅠㅠ" } })
+                        } >
+                        모달 2 열기
+                    </button>
+                </ModalLayout>
+            );
+        };
+     ```
+
 ### 문제점
 
 - ModalContext에서 모달에 props를 전달해줄 때 Record<string, any> 타입으로 전달해주니 인텔리센스가 props에 뜨지않음.
 - ModalContext.tsx 65번째 줄에 각 컴포넌트에 필요한 props가 적용되지 않았다는 에러 발생
 - ⭐️ 어떻게 고쳐야 좋을지 의견 주시면 적극 반영하겠습니다.
+
+```
+
+```
